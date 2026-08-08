@@ -1,0 +1,400 @@
+/* =========================================================
+   DESIGN TOKENS
+   One consistent palette across the whole site. Oh What Fun
+   borrows a coral pulled directly from its own logo artwork —
+   that's the one intentional departure, not a per-page gimmick.
+   ========================================================= */
+:root {
+  --white: #FFFFFF;
+  --offwhite: #F5F6F5;      /* used sparingly, for one band per page at most */
+  --ink: #1C2B2A;           /* primary text — warm-neutral near-black */
+  --ink-soft: #5B6663;
+  --navy: #1E3A5F;          /* primary brand color — nav, headings, buttons */
+  --navy-dim: #142944;
+  --green: #3C6B4E;         /* secondary accent — labels, links, small marks */
+  --green-dim: #2B4E39;
+  --coral: #D9705B;         /* Oh What Fun only — pulled from its own logo */
+  --coral-dim: #B65640;
+  --line: rgba(28, 43, 42, 0.14);
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --max-w: 1080px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* =========================================================
+   RESET & BASE
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 0 0 0.45em;
+  letter-spacing: -0.01em;
+  color: var(--navy);
+}
+
+h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); font-weight: 500; max-width: 16ch; }
+h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); }
+h3 { font-size: 1.2rem; }
+
+p { margin: 0 0 1em; color: var(--ink-soft); max-width: 58ch; }
+
+.label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 0.9em;
+}
+
+.wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+section { padding: clamp(3rem, 7vw, 5rem) 0; }
+.band { background: var(--offwhite); }
+
+hr.rule {
+  border: none;
+  border-top: 2px solid var(--navy);
+  width: 46px;
+  margin: 0 0 1.6em;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   HEADER / NAV
+   ========================================================= */
+.site-header {
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem var(--gutter);
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  color: var(--ink);
+}
+.brand img { width: 36px; height: 36px; }
+.brand-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--navy);
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(1rem, 2vw, 2rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding: 0.3rem 0;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  color: var(--navy);
+  border-color: var(--green);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+}
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  position: relative;
+}
+.nav-toggle span::before { position: absolute; top: -6px; }
+.nav-toggle span::after { position: absolute; top: 6px; }
+
+@media (max-width: 780px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    padding: 1rem var(--gutter) 1.5rem;
+    gap: 1rem;
+    display: none;
+  }
+  .nav-links.open { display: flex; }
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.8em 1.5em;
+  border: 1px solid var(--navy);
+  color: var(--navy);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn:hover { background: var(--navy); color: var(--white); }
+
+.btn-solid {
+  background: var(--navy);
+  color: var(--white);
+}
+.btn-solid:hover { background: var(--navy-dim); border-color: var(--navy-dim); }
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  padding: clamp(3.5rem, 9vw, 6rem) 0 clamp(2.5rem, 5vw, 3.5rem);
+}
+.hero p { font-size: 1.08rem; max-width: 50ch; }
+
+/* =========================================================
+   SIMPLE SERVICE LIST (homepage) — a plain directory-style
+   list rather than hover-flip cards.
+   ========================================================= */
+.service-list {
+  border-top: 1px solid var(--line);
+}
+.service-row {
+  display: grid;
+  grid-template-columns: 1.1fr 2fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.8rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--ink);
+}
+.service-row h3 { margin: 0; color: var(--navy); }
+.service-row p { margin: 0; font-size: 0.95rem; }
+.service-row .go {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--green);
+  white-space: nowrap;
+  transition: transform 0.15s ease;
+}
+.service-row:hover .go { transform: translateX(4px); }
+@media (max-width: 700px) {
+  .service-row { grid-template-columns: 1fr; gap: 0.4rem; }
+}
+
+/* =========================================================
+   TWO COLUMN
+   ========================================================= */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+@media (max-width: 780px) { .two-col { grid-template-columns: 1fr; } }
+.two-col.reverse .col-media { order: 2; }
+@media (max-width: 780px) { .two-col.reverse .col-media { order: 0; } }
+
+/* =========================================================
+   GALLERY
+   ========================================================= */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+@media (max-width: 700px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+
+.ph-image {
+  aspect-ratio: 4 / 5;
+  background:
+    repeating-linear-gradient(135deg, rgba(28,43,42,0.05) 0 2px, transparent 2px 14px),
+    var(--offwhite);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+}
+.ph-image .ph-label::before {
+  content: "ADD PHOTO";
+  display: block;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  margin-bottom: 0.3em;
+  font-size: 0.66rem;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+.form-grid { display: grid; gap: 1.1rem; max-width: 540px; }
+label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 0.4em;
+}
+input, textarea, select {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.7em 0.9em;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+}
+textarea { min-height: 120px; resize: vertical; }
+
+/* =========================================================
+   FOOTER — one slim row, appropriate for a site just starting out
+   ========================================================= */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 2rem 0;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.footer-brand img { width: 26px; height: 26px; }
+.footer-links {
+  display: flex;
+  gap: 1.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+.footer-links a { text-decoration: none; color: var(--ink-soft); }
+.footer-links a:hover { color: var(--navy); }
+
+/* =========================================================
+   OH WHAT FUN — the one page allowed its own accent, since it
+   has real logo artwork behind it.
+   ========================================================= */
+body.theme-fun .label { color: var(--coral); }
+body.theme-fun .btn-solid { background: var(--coral); border-color: var(--coral); }
+body.theme-fun .btn-solid:hover { background: var(--coral-dim); border-color: var(--coral-dim); }
+body.theme-fun .btn:hover { background: var(--coral); border-color: var(--coral); }
+body.theme-fun .service-row .go { color: var(--coral); }
+
+.fun-logo-hero {
+  max-width: 340px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.3rem;
+}
+.fun-logo-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.in-view { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
